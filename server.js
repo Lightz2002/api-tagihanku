@@ -1,5 +1,5 @@
 const app = require("./app");
-const port = process.env.SERVER_PORT | 3000;
+const port = process.env.SERVER_PORT || 3000;
 const logger = require("./src/util/logger");
 
 app.listen(port, () => {
