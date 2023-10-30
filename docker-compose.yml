@@ -1,0 +1,18 @@
+version: "3"
+services:
+  app:
+    build: . # Path to your application's Dockerfile
+    ports:
+      - "5000:3030" # Map the app's ports as needed
+    depends_on:
+      - db
+
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mydata:/data/db
+
+volumes:
+  mydata:
