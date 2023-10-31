@@ -1,18 +1,35 @@
 version: "3"
 services:
   app:
-    build: . # Path to your application's Dockerfile
+    build:
+      context: .
+      target: dev
+    environment:
+      NODE_ENV: production
+      MONGO_HOST: ${DB_HOST}
+      MONGO_USER: ${DB_USER}
+      MONGO_DB: ${DB_NAME}
+      MONGO_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5000:3030" # Map the app's ports as needed
+      - 5000:3030 # Map the app's ports as needed
+      - 9229:9229
     depends_on:
       - db
+    volumes:
+      - ./:/app
 
   db:
     image: mongo
+    user: ${DB_USER}
     ports:
       - "27017:27017"
     volumes:
       - mydata:/data/db
+    environment:
+      - MONGO_DB=${DB_NAME}
+      - MONGO_PASSWORD=${DB_PASSWORD}
+    expose:
+      - 5432
 
 volumes:
   mydata:
