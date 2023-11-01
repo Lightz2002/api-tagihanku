@@ -6,10 +6,12 @@ services:
       target: dev
     environment:
       NODE_ENV: ${NODE_ENV}
-      MONGO_HOST: ${DB_HOST}
-      MONGO_USER: ${DB_USER}
-      MONGO_DB: ${DB_NAME}
-      MONGO_PASSWORD: ${DB_PASSWORD}
+      DB_TYPE: ${DB_TYPE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     ports:
       - 5000:3030 # Map the app's ports as needed
       - 9229:9229
@@ -23,14 +25,13 @@ services:
 
   db:
     image: mongo
-    user: ${DB_USER}
     ports:
       - "27017:27017"
     volumes:
       - ./data:/data/db
     environment:
-      - MONGO_DB=${DB_NAME}
-      - MONGO_PASSWORD=${DB_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
     expose:
       - 27017
     networks:
