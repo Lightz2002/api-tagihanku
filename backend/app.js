@@ -1,8 +1,7 @@
 const express = require("express");
-
 const app = express();
-require("dotenv").config();
 
-app.get("/", (req, res) => res.json({ message: "Docker is hard !!, test2" }));
+/* env */
+require("dotenv").config();
 
 module.exports = app;
