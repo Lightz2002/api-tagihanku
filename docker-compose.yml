@@ -38,3 +38,6 @@ services:
 
 volumes:
   mydata:
+
+networks:
+  express-mongo:
