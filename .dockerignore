@@ -1,8 +1,0 @@
-# Ignore log files
-*.log
-
-# Ignore all .tmp files
-*.tmp
-
-# Ignore a specific directory and its contents
-/node_modules/

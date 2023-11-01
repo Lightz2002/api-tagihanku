@@ -1,11 +1,11 @@
 version: "3"
 services:
-  app:
+  backend:
     build:
-      context: .
+      context: backend
       target: dev
     environment:
-      NODE_ENV: production
+      NODE_ENV: ${NODE_ENV}
       MONGO_HOST: ${DB_HOST}
       MONGO_USER: ${DB_USER}
       MONGO_DB: ${DB_NAME}
@@ -15,8 +15,11 @@ services:
       - 9229:9229
     depends_on:
       - db
+    networks:
+      - express-mongo
     volumes:
-      - ./:/app
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
 
   db:
     image: mongo
@@ -24,12 +27,14 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mydata:/data/db
+      - ./data:/data/db
     environment:
       - MONGO_DB=${DB_NAME}
       - MONGO_PASSWORD=${DB_PASSWORD}
     expose:
-      - 5432
+      - 27017
+    networks:
+      - express-mongo
 
 volumes:
   mydata:
