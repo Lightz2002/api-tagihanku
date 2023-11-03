@@ -21,7 +21,6 @@ services:
       - express-mongo
     volumes:
       - ./backend:/usr/src/app
-      - /usr/src/app/node_modules
 
   db:
     image: mongo
