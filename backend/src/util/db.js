@@ -11,6 +11,8 @@ const dbPassword = process.env.DB_PASSWORD;
 
 const connectionURI = `${dbType}://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`; // Replace with your MongoDB connectionURI
 
+// const connectionURI = 'mongodb://db:27017/test';
+
 /**
  * Connect to db
  * @return {null} null

@@ -1,10 +1,29 @@
 version: "3"
 services:
+  frontend:
+    build:
+      context: frontend
+      target: dev
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "3000:3000" # Map the app's ports as needed
+    depends_on:
+      - backend
+    networks:
+      - react-express
+    stdin_open: true
+    restart: always
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+
   backend:
     build:
       context: backend
       target: dev
     environment:
+      SERVER_PORT: ${SERVER_PORT}
       NODE_ENV: ${NODE_ENV}
       DB_TYPE: ${DB_TYPE}
       DB_HOST: ${DB_HOST}
@@ -12,22 +31,27 @@ services:
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
     ports:
-      - 5000:3030 # Map the app's ports as needed
-      - 9229:9229
+      - "5000:3030" # Map the app's ports as needed
+      - "9229:9229"
     depends_on:
       - db
     networks:
       - express-mongo
+      # - react-express
     volumes:
       - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
 
   db:
     image: mongo
     ports:
       - "27017:27017"
     volumes:
-      - ./data:/data/db
+      - mydata:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
@@ -35,9 +59,11 @@ services:
       - 27017
     networks:
       - express-mongo
+    restart: always
 
 volumes:
   mydata:
 
 networks:
   express-mongo:
+  react-express:
